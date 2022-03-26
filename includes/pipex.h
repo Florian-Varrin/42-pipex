@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:06:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/26 13:49:48 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/26 14:49:29 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 
 # define ERR_INVALID_NUMBER_ARGUMENT "Invalid number of arguments\n"
 # define ERR_CREATING_PIPE "Error while creating pipes\n"
+# define ERR_WRITING_PIPE "Error while writing to pipe\n"
 # define ERR_FORKING_PROCESS "Error while forking process\n"
+# define ERR_OPENING_FILE "Error while opening file\n"
+# define ERR_WRITING_FILE "Error while writing to file\n"
 
 typedef struct s_program {
 	char	*path;
@@ -51,13 +54,14 @@ t_programs	*create_programs(int argc, char **argv);
 
 /**
  *
- * Set the pipes to stdin / stdout and execute the program
+ * Route the pipes to stdin / stdout and execute the program
  *
  * @param {t_program *} program
  * @param {int **} pipes
  * @param {int} index
+ * @param {char **} envp
  */
-void		execute_program(t_program *program, int **pipes, int index);
+void		execute_program(t_program *program, int **pipes, int index, char **envp);
 
 /**
  *
@@ -78,6 +82,32 @@ void		destroy_programs(t_programs *programs);
  * @return {int **} pointer on created pipes array
  */
 int			**create_pipes(int number_of_child_processes, int **pipes);
+
+/**
+ *
+ * Close all unnecessary pipes for current child process
+ *
+ * @param {int **} pipes
+ * @param {int} number_of_child_processes
+ * @param {int} index
+ */
+void		close_pipes_in_child_process(
+				int **pipes,
+				int number_of_child_processes,
+				int index
+				);
+
+/**
+ *
+ * Close all unnecessary pipes for main process
+ *
+ * @param {int **} pipes
+ * @param {int} number_of_child_processes
+ */
+void		close_pipes_in_main_process(
+				int **pipes,
+				int number_of_child_processes
+				);
 
 /**
  *
@@ -116,8 +146,19 @@ int			count_total_process(int number_of_child_processes);
  * @param {t_programs *} programs
  * @param {int *} pids
  * @param {int **} pipes
+ * @param {char **} envp
  *
  * @return {int *} pointer on allocated pids
  */
-int			*create_processes(t_programs *programs, int *pids, int **pipes);
+int			*create_processes(t_programs *programs, int *pids, int **pipes, char **envp);
+
+/**
+ *
+ * Read from infile and write to beginning of pipes. Then read from end
+ * of pipes and write to outfile
+ *
+ * @param {t_programs *} programs
+ * @param {int **} pipes
+ */
+void		handle_main_process(t_programs *programs, int **pipes);
 #endif

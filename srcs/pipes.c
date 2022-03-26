@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 13:29:02 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/26 13:38:52 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/26 15:38:28 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #include <unistd.h>
 
 /**
+ *
  * Allocate memory for pipes to connect all processes.
- * Number of child processes + main process)
  *
  * @param number_of_child_processes
  *
@@ -59,6 +59,53 @@ int	**create_pipes(int number_of_child_processes, int **pipes)
 		i++;
 	}
 	return (pipes);
+}
+
+void	close_pipes_in_child_process(
+		int **pipes,
+		int number_of_child_processes,
+		int index
+	)
+{
+	int		i;
+	int		total_number_of_processes;
+
+	total_number_of_processes = count_total_process(number_of_child_processes);
+	i = 0;
+	while (i < total_number_of_processes)
+	{
+		if (index != i)
+			close(pipes[i][0]);
+		if (index + 1 != i)
+			close(pipes[i][1]);
+		i++;
+	}
+	ft_printf("\n");
+}
+
+void	close_pipes_in_main_process(
+		int **pipes,
+		int number_of_child_processes
+)
+{
+	int		i;
+	int		total_number_of_processes;
+
+	total_number_of_processes = count_total_process(number_of_child_processes);
+	i = 0;
+	while (i < total_number_of_processes)
+	{
+		if (i != number_of_child_processes)
+		{
+			close(pipes[i][0]);
+		}
+		if (i != 0)
+		{
+			close(pipes[i][1]);
+		}
+		i++;
+	}
+	ft_printf("\n");
 }
 
 void	destroy_pipes(int number_of_child_processes, int **pipes)

@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 13:55:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/26 13:47:46 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/26 16:07:21 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 
 void	exit_error(char *message, int code)
 {
-	ft_printf(message);
+	ft_perror(message);
 	exit(code);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	int			i;
 	int			*pids;
@@ -35,13 +35,12 @@ int	main(int argc, char **argv)
 	pipes = NULL;
 	pids = NULL;
 	pipes = create_pipes(number_of_child_processes, pipes);
-	pids = create_processes(programs, pids, pipes);
+	pids = create_processes(programs, pids, pipes, envp);
 	i = 0;
-	while (i < number_of_child_processes)
-	{
+	close_pipes_in_main_process(pipes, number_of_child_processes);
+	handle_main_process(programs, pipes);
+	while ((i++) < number_of_child_processes)
 		wait(NULL);
-		i++;
-	}
 	destroy_pipes(number_of_child_processes, pipes);
 	free(pids);
 	return (0);

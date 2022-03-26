@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 14:05:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/13 15:22:50 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/26 16:12:06 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,17 @@ void	destroy_programs(t_programs *programs)
 	free(programs);
 }
 
-void	execute_program(t_program *program, int **pipes, int index)
+void	execute_program(t_program *program, int **pipes, int index, char **envp)
 {
-	dup2(pipes[index][1], STDOUT_FILENO);
-	close(pipes[index][1]);
+	dup2(pipes[index][0], STDIN_FILENO);
+	close(pipes[index][0]);
+	dup2(pipes[index + 1][1], STDOUT_FILENO);
+	close(pipes[index + 1][1]);
 	if (index == 0)
-		execlp("ls", "ls", "-l", NULL);
+		execlp("cat", "cat", NULL);
 	else
-		execlp("wc", "wc", "-l", NULL);
+		execlp("grep", "grep", "m", NULL);
+	(void) envp;
 	(void) program;
-//	execve(program->path, program->argv, NULL);
+//	execve(program->path, program->argv, envp);
 }
