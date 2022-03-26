@@ -7,6 +7,6 @@
 compile_commands.json
 .cache
 .idea
-fdf
-maps
+pipex
+tests
  __MACOSX

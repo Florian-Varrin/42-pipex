@@ -17,13 +17,13 @@ HEADER_DIR			= ${ROOT_DIR}/includes/
 LIBFT_DIR			= ${ROOT_DIR}/libft/
 
 # COMPILER
-SRC					= $(addprefix ${SRC_DIR}, main.c)
+SRC					= $(addprefix ${SRC_DIR}, main.c programs.c pipes.c processes.c)
 OBJ					= $(SRC:.c=.o)
 NAME 				= pipex
 NORM_BIN			= norminette
 NORM_FLAGS			= -RCheckForbiddenSourceHeader -RCheckDefine
 RM					= rm -f
-CFLAGS				= -Wall -Wextra -Werror -I${HEADER_DIR} -I${LIBFT_DIR}includes
+CFLAGS				= -Wall -Wextra -Werror -I${HEADER_DIR} -I${LIBFT_DIR}includes -g
 CC					= gcc
 LIBFT_FLAGS			= -L${LIBFT_DIR} -lft
 BUFFER_SIZE			= 1024
