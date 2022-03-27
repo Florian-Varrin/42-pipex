@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 14:05:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/26 16:12:06 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/27 14:40:29 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 /**
  * Allocate the memory and fulfil a program
@@ -85,12 +86,49 @@ void	destroy_programs(t_programs *programs)
 	free(programs);
 }
 
-void	execute_program(t_program *program, int **pipes, int index, char **envp)
+/**
+ *
+ * Redirect stdin and stdout to either pipe or file.
+ *
+ * @param {t_programs *} programs
+ * @param {int **} pipes
+ * @param {int} index
+ */
+static void	route_program_io(t_programs *programs, int **pipes, int index)
 {
-	dup2(pipes[index][0], STDIN_FILENO);
-	close(pipes[index][0]);
-	dup2(pipes[index + 1][1], STDOUT_FILENO);
-	close(pipes[index + 1][1]);
+	int		infile_fd;
+	int		outfile_fd;
+
+	if (index == 0)
+	{
+		infile_fd = open(programs->infile, O_RDONLY);
+		dup2(infile_fd, STDIN_FILENO);
+		close(pipes[index][0]);
+	}
+	else
+	{
+		dup2(pipes[index][0], STDIN_FILENO);
+		close(pipes[index][0]);
+	}
+	if (index == programs->number_of_programs - 1)
+	{
+		outfile_fd = open(programs->outfile, O_WRONLY);
+		dup2(outfile_fd, STDOUT_FILENO);
+		close(pipes[index + 1][1]);
+	}
+	else
+	{
+		dup2(pipes[index + 1][1], STDOUT_FILENO);
+		close(pipes[index + 1][1]);
+	}
+}
+
+void	execute_program(t_programs *programs, int **pipes, int index, char **envp)
+{
+	t_program	*program;
+
+	route_program_io(programs, pipes, index);
+	program = programs->programs[index];
 	if (index == 0)
 		execlp("cat", "cat", NULL);
 	else
