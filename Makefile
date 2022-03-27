@@ -17,7 +17,7 @@ HEADER_DIR			= ${ROOT_DIR}/includes/
 LIBFT_DIR			= ${ROOT_DIR}/libft/
 
 # COMPILER
-SRC					= $(addprefix ${SRC_DIR}, main.c program.c programs.c pipes.c processes.c utils.c)
+SRC					= $(addprefix ${SRC_DIR}, main.c programs.c execute.c pipes.c processes.c utils.c)
 OBJ					= $(SRC:.c=.o)
 NAME 				= pipex
 NORM_BIN			= norminette

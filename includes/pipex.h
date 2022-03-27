@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:06:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/27 16:29:28 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/27 16:30:38 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,6 @@ void		exit_error(char *message, int code);
  * @return {int} File descriptor
  */
 int			open_file(char *path, int flags);
-
-/**
- * Allocate the memory and fulfil a program
- *
- * @param {char *} program_str - a string for the program. For instance "ls -l"
- * @return
- */
-t_program	*create_program(char *program_str);
 
 /**
  *

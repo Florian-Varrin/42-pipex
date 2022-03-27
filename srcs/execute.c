@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   program.c                                          :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:25:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/27 16:30:37 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/27 16:39:00 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,43 +17,27 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-t_program	*create_program(char *program_str)
-{
-	t_program	*program;
-	char		**arguments;
-	int			i;
-	int			number_or_arguments;
-
-	program = (t_program *)malloc(sizeof(t_program));
-	arguments = ft_split(program_str, ' ');
-	program->path = ft_strjoin("/", arguments[0]);
-	i = 0;
-	number_or_arguments = 0;
-	while (arguments[i++])
-		number_or_arguments++;
-	program->argv = (char **)malloc(sizeof(char *) * (number_or_arguments + 1));
-	i = 0;
-	while (i < number_or_arguments)
-	{
-		program->argv[i] = ft_strdup(arguments[i]);
-		free(arguments[i]);
-		i++;
-	}
-	program->argv[i] = NULL;
-	free(arguments);
-	return (program);
-}
-
-void	destroy_program(t_program *program)
+/**
+ *
+ * Get list of paths from environment
+ *
+ * @return {char **} Paths
+ */
+static char	**get_env_paths(void)
 {
 	int		i;
+	char	**paths;
 
-	free(program->path);
 	i = 0;
-	while (program->argv[i])
-		free(program->argv[i++]);
-	free(program->argv);
-	free(program);
+	paths = NULL;
+	while (paths == NULL)
+	{
+		if (ft_strncmp(environ[i], "PATH=", 5) == 0)
+			paths = ft_split((environ[i] + 5), ':');
+		else
+			i++;
+	}
+	return (paths);
 }
 
 /**
@@ -71,18 +55,11 @@ static char	*get_program_path(t_program *program)
 	char	*program_path;
 
 	i = 0;
-	paths = NULL;
-	while (paths == NULL)
-	{
-		if (ft_strncmp(environ[i], "PATH=", 5) == 0)
-			paths = ft_split((environ[i] + 5), ':');
-		else
-			i++;
-	}
-	i = 0;
+	paths = get_env_paths();
 	while (paths[i])
 	{
 		program_path = ft_strjoin(paths[i], program->path);
+		free(paths[i]);
 		if (access(program_path, X_OK) == F_OK)
 			break ;
 		else
@@ -92,6 +69,7 @@ static char	*get_program_path(t_program *program)
 		}
 		i++;
 	}
+	free(paths);
 	return (program_path);
 }
 

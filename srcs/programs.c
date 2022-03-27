@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 14:05:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/27 16:29:28 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/27 16:36:24 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,51 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+
+/**
+ * Allocate the memory and fulfil a program
+ *
+ * @param {char *} program_str - a string for the program. For instance "ls -l"
+ * @return
+ */
+static t_program	*create_program(char *program_str)
+{
+	t_program	*program;
+	char		**arguments;
+	int			i;
+	int			number_or_arguments;
+
+	program = (t_program *)malloc(sizeof(t_program));
+	arguments = ft_split(program_str, ' ');
+	program->path = ft_strjoin("/", arguments[0]);
+	i = 0;
+	number_or_arguments = 0;
+	while (arguments[i++])
+		number_or_arguments++;
+	program->argv = (char **)malloc(sizeof(char *) * (number_or_arguments + 1));
+	i = 0;
+	while (i < number_or_arguments)
+	{
+		program->argv[i] = ft_strdup(arguments[i]);
+		free(arguments[i]);
+		i++;
+	}
+	program->argv[i] = NULL;
+	free(arguments);
+	return (program);
+}
+
+void	destroy_program(t_program *program)
+{
+	int		i;
+
+	free(program->path);
+	i = 0;
+	while (program->argv[i])
+		free(program->argv[i++]);
+	free(program->argv);
+	free(program);
+}
 
 t_programs	*create_programs(int argc, char **argv)
 {
@@ -52,4 +97,3 @@ void	destroy_programs(t_programs *programs)
 	free(programs->programs);
 	free(programs);
 }
-
