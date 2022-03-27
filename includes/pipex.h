@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:06:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/27 14:54:20 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/03/27 16:29:28 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 # define ERR_INVALID_NUMBER_ARGUMENT "Invalid number of arguments\n"
 # define ERR_CREATING_PIPE "Error while creating pipes\n"
-# define ERR_WRITING_PIPE "Error while writing to pipe\n"
 # define ERR_FORKING_PROCESS "Error while forking process\n"
-# define ERR_OPENING_FILE "Error while opening file\n"
-# define ERR_WRITING_FILE "Error while writing to file\n"
+# define ERR_EXECUTING_BIN "Error while executing program\n"
+
+extern char	**environ;
 
 typedef struct s_program {
 	char	*path;
@@ -43,14 +43,31 @@ void		exit_error(char *message, int code);
 
 /**
  *
- * Allocate memory and fulfil the programs struct and the program list inside it
+ * Open a file and return it's file descriptor. If there is an error, print
+ * a message and exit program
  *
- * @param {int} argc
- * @param {char **} argv
+ * @param {char *} path
+ * @param {int} flags
  *
- * @return {t_programs *} Pointer to the programs struct
+ * @return {int} File descriptor
  */
-t_programs	*create_programs(int argc, char **argv);
+int			open_file(char *path, int flags);
+
+/**
+ * Allocate the memory and fulfil a program
+ *
+ * @param {char *} program_str - a string for the program. For instance "ls -l"
+ * @return
+ */
+t_program	*create_program(char *program_str);
+
+/**
+ *
+ * Free memory of the program struct
+ *
+ * @param {t_program *} program
+ */
+void		destroy_program(t_program *program);
 
 /**
  *
@@ -59,9 +76,19 @@ t_programs	*create_programs(int argc, char **argv);
  * @param {t_programs *} programs
  * @param {int **} pipes
  * @param {int} index
- * @param {char **} envp
  */
-void		execute_program(t_programs *programs, int **pipes, int index, char **envp);
+void		execute_program(t_programs *programs, int **pipes, int index);
+
+/**
+ *
+ * Allocate memory and fulfil the programs struct and the program list inside it
+ *
+ * @param {int} argc
+ * @param {char **} argv
+ *
+ * @return {t_programs *} Pointer to the programs struct
+ */
+t_programs	*create_programs(int argc, char **argv);
 
 /**
  *
@@ -146,9 +173,8 @@ int			count_total_process(int number_of_child_processes);
  * @param {t_programs *} programs
  * @param {int *} pids
  * @param {int **} pipes
- * @param {char **} envp
  *
  * @return {int *} pointer on allocated pids
  */
-int			*create_processes(t_programs *programs, int *pids, int **pipes, char **envp);
+int			*create_processes(t_programs *programs, int *pids, int **pipes);
 #endif
