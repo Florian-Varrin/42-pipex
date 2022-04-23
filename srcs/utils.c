@@ -20,6 +20,6 @@ int	open_file(char *path, int flags)
 
 	fd = open(path, flags);
 	if (fd < 0)
-		exit_error(path, 2);
+		exit_error(path, ERR_OPENING_FILE);
 	return (fd);
 }

@@ -6,17 +6,17 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:06:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/04/23 14:28:20 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 15:10:03 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# define ERR_INVALID_NUMBER_ARGUMENT "Invalid number of arguments\n"
-# define ERR_CREATING_PIPE "Error while creating pipes\n"
-# define ERR_FORKING_PROCESS "Error while forking process\n"
-# define ERR_EXECUTING_BIN "command not found: %s\n"
+# define MSG_INVALID_NUMBER_ARGUMENT "Invalid number of arguments\n"
+# define MSG_CREATING_PIPE "Error while creating pipes\n"
+# define MSG_FORKING_PROCESS "Error while forking process\n"
+# define MSG_EXECUTING_BIN "command not found: %s\n"
 
 extern char	**environ;
 
@@ -35,6 +35,21 @@ typedef struct s_programs {
 }	t_programs;
 
 /**
+ * Error codes :
+ * 1: Invalid number of arguments
+ * 2: Error while opening file
+ * 3: Error forking process
+ * 4: Command not found
+ *
+ */
+typedef enum e_error_codes {
+	ERR_INVALID_NUMBER_ARGUMENTS = 1,
+	ERR_OPENING_FILE = 2,
+	ERR_FORKING_PROCESS = 3,
+	ERR_COMMAND_NOT_FOUND = 4
+}	t_error_codes;
+
+/**
  *
  * Print message whit perror and exit with code
  *
@@ -47,12 +62,6 @@ void		exit_error(char *message, int code);
  *
  * Open a file and return it's file descriptor. If there is an error, print
  * a message and exit program
- *
- * Error codes :
- * 1: Invalid number of arguments
- * 2: Error while opening file
- * 3: Error forking process
- * 4: Command not found
  *
  * @param {char *} path
  * @param {int} flags

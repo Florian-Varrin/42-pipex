@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 14:05:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/04/23 14:23:23 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 15:09:07 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_programs	*create_programs(int argc, char **argv)
 	t_programs	*program_list;
 
 	if (argc < 5)
-		exit_error(ERR_INVALID_NUMBER_ARGUMENT, 1);
+		exit_error(MSG_INVALID_NUMBER_ARGUMENT, ERR_INVALID_NUMBER_ARGUMENTS);
 	program_list = (t_programs *)malloc(sizeof(t_programs));
 	program_list->outfile = ft_strdup(argv[argc - 1]);
 	program_list->infile = ft_strdup(argv[1]);

@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:25:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/04/23 14:08:57 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 15:09:07 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ void	execute_program(t_programs *programs, int **pipes, int index)
 	program_path = get_program_path(program);
 	if (program_path == NULL)
 	{
-		ft_printf_fd(STDERR_FILENO, ERR_EXECUTING_BIN, program->name);
-		exit_error(NULL, 4);
+		ft_printf_fd(STDERR_FILENO, MSG_EXECUTING_BIN, program->name);
+		exit_error(NULL, ERR_COMMAND_NOT_FOUND);
 	}
 	if (execve(program_path, program->argv, environ) == -1)
 	{

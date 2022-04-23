@@ -53,7 +53,7 @@ int	**create_pipes(int number_of_child_processes, int **pipes)
 	{
 		if (pipe(pipes[i]) == -1)
 		{
-			ft_printf(ERR_CREATING_PIPE);
+			ft_printf(MSG_CREATING_PIPE);
 			exit(-2);
 		}
 		i++;
