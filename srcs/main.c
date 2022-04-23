@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 13:55:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/27 16:13:51 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 14:17:31 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void	exit_error(char *message, int code)
 {
-	perror(message);
+	if (message != NULL)
+		perror(message);
 	exit(code);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 14:05:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/27 16:36:24 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 14:22:48 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static t_program	*create_program(char *program_str)
 	program = (t_program *)malloc(sizeof(t_program));
 	arguments = ft_split(program_str, ' ');
 	program->path = ft_strjoin("/", arguments[0]);
+	program->name = ft_strdup(arguments[0]);
 	i = 0;
 	number_or_arguments = 0;
 	while (arguments[i++])
@@ -69,7 +70,7 @@ t_programs	*create_programs(int argc, char **argv)
 	t_programs	*program_list;
 
 	if (argc < 5)
-		exit_error(ERR_INVALID_NUMBER_ARGUMENT, -1);
+		exit_error(ERR_INVALID_NUMBER_ARGUMENT, 1);
 	program_list = (t_programs *)malloc(sizeof(t_programs));
 	program_list->outfile = ft_strdup(argv[argc - 1]);
 	program_list->infile = ft_strdup(argv[1]);

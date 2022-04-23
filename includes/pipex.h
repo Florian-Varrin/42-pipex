@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:06:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/27 16:30:38 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 14:23:35 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 # define ERR_INVALID_NUMBER_ARGUMENT "Invalid number of arguments\n"
 # define ERR_CREATING_PIPE "Error while creating pipes\n"
 # define ERR_FORKING_PROCESS "Error while forking process\n"
-# define ERR_EXECUTING_BIN "Error while executing program\n"
+# define ERR_EXECUTING_BIN "command not found: %s\n"
 
 extern char	**environ;
 
 typedef struct s_program {
 	char	*path;
+	char	*name;
 	char	**argv;
 }	t_program;
 
@@ -34,7 +35,7 @@ typedef struct s_programs {
 
 /**
  *
- * Print message and exit with code
+ * Print message whit perror and exit with code
  *
  * @param {char *} message
  * @param {int} code
@@ -45,6 +46,12 @@ void		exit_error(char *message, int code);
  *
  * Open a file and return it's file descriptor. If there is an error, print
  * a message and exit program
+ *
+ * Error codes :
+ * 1: Invalid number of arguments
+ * 2: Error while opening file
+ * 3: Error forking process
+ * 4: Command not found
  *
  * @param {char *} path
  * @param {int} flags

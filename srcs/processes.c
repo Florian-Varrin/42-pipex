@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 13:55:46 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/03/27 15:39:34 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 14:18:22 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	*create_processes(t_programs *programs, int *pids, int **pipes)
 	{
 		pids[i] = fork();
 		if (pids[i] == -1)
-			exit_error(ERR_FORKING_PROCESS, -3);
+			exit_error(ERR_FORKING_PROCESS, 3);
 		if (pids[i] == 0)
 		{
 			close_pipes_in_child_process(pipes, number_of_child_processes, i);
