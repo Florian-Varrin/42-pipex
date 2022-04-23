@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 14:05:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/04/23 14:22:48 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 14:23:23 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static t_program	*create_program(char *program_str)
 	arguments = ft_split(program_str, ' ');
 	program->path = ft_strjoin("/", arguments[0]);
 	program->name = ft_strdup(arguments[0]);
+	program->return_value = 0;
 	i = 0;
 	number_or_arguments = 0;
 	while (arguments[i++])

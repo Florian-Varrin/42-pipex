@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:06:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/04/23 14:23:35 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 14:28:20 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_program {
 	char	*path;
 	char	*name;
 	char	**argv;
+	int		return_value;
 }	t_program;
 
 typedef struct s_programs {
@@ -175,5 +176,5 @@ int			count_total_process(int number_of_child_processes);
  *
  * @return {int *} pointer on allocated pids
  */
-int			*create_processes(t_programs *programs, int *pids, int **pipes);
+int			*create_processes(t_programs *programs, int *pids, int **pipe);
 #endif

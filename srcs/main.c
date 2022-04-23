@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 13:55:10 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/04/23 14:17:31 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/23 14:49:36 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,13 @@ int	main(int argc, char **argv)
 	pids = create_processes(programs, pids, pipes);
 	i = 0;
 	close_pipes_in_main_process(pipes, number_of_child_processes);
-	while ((i++) < number_of_child_processes)
-		wait(NULL);
+	while (i < number_of_child_processes)
+	{
+		waitpid(pids[i], &(programs->programs[i]->return_value), 0);
+		if (WEXITSTATUS(programs->programs[i]->return_value) != 0)
+			exit(WEXITSTATUS(programs->programs[i]->return_value));
+		i++;
+	}
 	destroy_pipes(number_of_child_processes, pipes);
 	destroy_programs(programs);
 	free(pids);
