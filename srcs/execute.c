@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:25:23 by fvarrin           #+#    #+#             */
-/*   Updated: 2022/04/23 15:09:07 by fvarrin          ###   ########.fr       */
+/*   Updated: 2022/04/24 11:41:07 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static void	route_program_io(t_programs *programs, int **pipes, int index)
 	}
 	if (index == programs->number_of_programs - 1)
 	{
-		outfile_fd = open_file(programs->outfile, O_WRONLY);
+		outfile_fd = open_file(programs->outfile, O_WRONLY | O_CREAT | O_TRUNC);
 		dup2(outfile_fd, STDOUT_FILENO);
 		close(pipes[index + 1][1]);
 	}

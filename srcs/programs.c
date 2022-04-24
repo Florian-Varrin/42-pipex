@@ -62,6 +62,7 @@ void	destroy_program(t_program *program)
 	while (program->argv[i])
 		free(program->argv[i++]);
 	free(program->argv);
+	free(program->name);
 	free(program);
 }
 

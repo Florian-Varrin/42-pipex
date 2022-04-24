@@ -18,6 +18,8 @@
 # define MSG_FORKING_PROCESS "Error while forking process\n"
 # define MSG_EXECUTING_BIN "command not found: %s\n"
 
+# define FILE_PERMISSION_IF_CREATED 0664
+
 extern char	**environ;
 
 typedef struct s_program {
